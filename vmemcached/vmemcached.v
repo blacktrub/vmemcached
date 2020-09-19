@@ -11,6 +11,11 @@ pub struct Memcached {
 	socket net.Socket 
 }
 
+pub struct Value {
+	pub:
+		content string
+}
+
 pub fn connect(opt Connection) ?Memcached {
 	socket := net.dial(opt.host, opt.port) or {
 		return error(err)
@@ -32,4 +37,17 @@ pub fn (m Memcached) flushall() bool {
 		'OK' {true}
 		else {false}
 	}
+}
+
+pub fn (m Memcached) get(key string) Value {
+	msg := 'get $key\r\n'
+	m.socket.write(msg) or {
+		return Value{}
+	}
+	response := m.socket.read_line()
+	if response == 'END\r\n' {
+		return Value{}
+	}
+	// TODO: return real value
+	return Value{}
 }

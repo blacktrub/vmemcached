@@ -28,3 +28,13 @@ fn test_flushall() {
 	response := m.flushall()
 	assert response == true
 }
+
+fn test_empty_get() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+
+	response := m.get('test')
+	assert response.content == ''
+}
