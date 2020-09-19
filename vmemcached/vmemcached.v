@@ -51,3 +51,15 @@ pub fn (m Memcached) get(key string) Value {
 	// TODO: return real value
 	return Value{}
 }
+
+pub fn (m Memcached) set(key string, val string) bool {
+	msg := 'set $key 0 0 $val.len\r\n$val\r\n'
+	m.socket.write(msg) or {
+		return false
+	}
+    response := m.socket.read_line()[0..6]
+	return match response {
+		'STORED' {true}
+		else {false}
+	}
+}

@@ -38,3 +38,13 @@ fn test_empty_get() {
 	response := m.get('test')
 	assert response.content == ''
 }
+
+fn test_set_value() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+
+	response := m.set('key', 'value')
+	assert response == true
+}
