@@ -48,3 +48,14 @@ fn test_set_value() {
 	response := m.set('key', 'value')
 	assert response == true
 }
+
+fn test_nonempty_get() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+
+	m.set('key', 'test')
+	response := m.get('key')
+	assert response.content == 'test'
+}

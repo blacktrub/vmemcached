@@ -1,6 +1,6 @@
 # TODO
-set
-add
+~~set~~
+~~add~~
 replace
 get
 delete

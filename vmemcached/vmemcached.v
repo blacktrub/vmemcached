@@ -48,8 +48,9 @@ pub fn (m Memcached) get(key string) Value {
 	if response == 'END\r\n' {
 		return Value{}
 	}
-	// TODO: return real value
-	return Value{}
+	m.socket.read_line()
+	value := m.socket.read_line()
+	return Value{value.replace('\r\n', '')}
 }
 
 pub fn (m Memcached) set(key string, val string) bool {
