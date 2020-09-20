@@ -1,8 +1,8 @@
 # TODO
 ~~set~~
-~~add~~
+add
 replace
-get
+~~get~~
 delete
 incr/decr
 stats
