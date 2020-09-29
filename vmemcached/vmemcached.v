@@ -50,6 +50,7 @@ pub fn (m Memcached) get(key string) Value {
 	if response == 'END\r\n' {
 		return Value{}
 	}
+	// TODO: why?
 	m.socket.read_line()
 	value := m.socket.read_line()
 	return Value{value.replace('\r\n', '')}
@@ -62,6 +63,21 @@ pub fn (m Memcached) set(key, val string) bool {
 	}
 	response := m.socket.read_line()[0..6]
 	return match response {
+		'STORED' { true }
+		else { false }
+	}
+}
+
+pub fn (m Memcached) replace(key, val string) bool {
+	msg := 'replace $key 0 0 $val.len\r\n$val\r\n'
+	m.socket.write(msg) or {
+		return false
+	}
+	// TODO: why?
+	m.socket.read_line()
+	response := m.socket.read_line()
+	clean_response := response.replace('\r\n', '')
+	return match clean_response {
 		'STORED' { true }
 		else { false }
 	}
