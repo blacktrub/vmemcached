@@ -12,14 +12,6 @@ fn clean(m vmemcached.Memcached) {
 	m.disconnect()
 }
 
-fn test_doing_nothing() {
-	m := setup()
-	defer {
-		clean(m)
-	}
-	assert 2 == 2
-}
-
 fn test_flushall() {
 	m := setup()
 	defer {
@@ -34,7 +26,6 @@ fn test_empty_get() {
 	defer {
 		clean(m)
 	}
-
 	response := m.get('test')
 	assert response.content == ''
 }
@@ -44,7 +35,6 @@ fn test_set_value() {
 	defer {
 		clean(m)
 	}
-
 	response := m.set('key', 'value')
 	assert response == true
 }
@@ -54,7 +44,6 @@ fn test_nonempty_get() {
 	defer {
 		clean(m)
 	}
-
 	m.set('key', 'test')
 	response := m.get('key')
 	assert response.content == 'test'
