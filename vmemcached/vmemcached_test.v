@@ -69,3 +69,22 @@ fn test_replace_work_with_real_key() {
 	real_val := m.get('key')
 	assert real_val.content == '2'
 }
+
+fn test_delete_empty_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.delete('key')
+	assert !response
+}
+
+fn test_delete_with_real_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('key', '1')
+	response := m.delete('key')
+	assert response
+}

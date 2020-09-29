@@ -16,6 +16,10 @@ pub:
 	content string
 }
 
+fn clean_response(response string) string {
+	return response.replace('\r\n', '')
+}
+
 pub fn connect(opt Connection) ?Memcached {
 	socket := net.dial(opt.host, opt.port) or {
 		return error(err)
@@ -53,7 +57,7 @@ pub fn (m Memcached) get(key string) Value {
 	// TODO: why?
 	m.socket.read_line()
 	value := m.socket.read_line()
-	return Value{value.replace('\r\n', '')}
+	return Value{clean_response(value)}
 }
 
 pub fn (m Memcached) set(key, val string) bool {
@@ -76,10 +80,22 @@ pub fn (m Memcached) replace(key, val string) bool {
 	// TODO: why?
 	// see https://github.com/vlang/v/blob/master/vlib/net/socket.v#L310
 	m.socket.read_line()
-	response := m.socket.read_line()
-	clean_response := response.replace('\r\n', '')
-	return match clean_response {
+	response := clean_response(m.socket.read_line())
+	return match response {
 		'STORED' { true }
+		else { false }
+	}
+}
+
+pub fn (m Memcached) delete(key string) bool {
+	msg := 'delete $key\r\n'
+	m.socket.write(msg) or {
+		return false
+	}
+	m.socket.read_line()
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'DELETED' { true }
 		else { false }
 	}
 }

@@ -3,7 +3,7 @@
 - add
 - ~~replace~~
 - ~~get~~
-- delete
+- ~~delete~~
 - incr/decr
 - stats
 - ~~flush_all~~
