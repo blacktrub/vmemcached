@@ -74,6 +74,7 @@ pub fn (m Memcached) replace(key, val string) bool {
 		return false
 	}
 	// TODO: why?
+	// see https://github.com/vlang/v/blob/master/vlib/net/socket.v#L310
 	m.socket.read_line()
 	response := m.socket.read_line()
 	clean_response := response.replace('\r\n', '')
