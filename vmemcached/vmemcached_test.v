@@ -18,7 +18,7 @@ fn test_flushall() {
 		clean(m)
 	}
 	response := m.flushall()
-	assert response == true
+	assert response
 }
 
 fn test_empty_get() {
@@ -36,7 +36,7 @@ fn test_set_value() {
 		clean(m)
 	}
 	response := m.set('key', 'value')
-	assert response == true
+	assert response
 }
 
 fn test_nonempty_get() {
@@ -55,7 +55,7 @@ fn test_replace_empty_key() {
 		clean(m)
 	}
 	response := m.replace('key', 'test')
-	assert response == false
+	assert !response
 }
 
 fn test_replace_work_with_real_key() {
@@ -65,7 +65,7 @@ fn test_replace_work_with_real_key() {
 	}
 	m.set('key', '1')
 	response := m.replace('key', '2')
-	assert response == true
+	assert response
 	real_val := m.get('key')
 	assert real_val.content == '2'
 }
