@@ -107,3 +107,24 @@ fn test_add_do_not_work_with_nonempty_key() {
 	response := m.add('key', '2')
 	assert !response
 }
+
+fn test_incr_do_not_work_with_empty_value() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.incr('key', '1')
+	assert !response
+}
+
+fn test_incr_just_work() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('key', '1')
+	response := m.incr('key', '1')
+	assert response
+	val := m.get('key')
+	assert val.content == '2'
+}
