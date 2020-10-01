@@ -88,3 +88,22 @@ fn test_delete_with_real_key() {
 	response := m.delete('key')
 	assert response
 }
+
+fn test_add_work_with_empty_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.add('key', '1')
+	assert response
+}
+
+fn test_add_do_not_work_with_nonempty_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('key', '1')
+	response := m.add('key', '2')
+	assert !response
+}

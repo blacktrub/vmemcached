@@ -1,6 +1,6 @@
 # TODO
 - ~~set~~
-- add
+- ~~add~~
 - ~~replace~~
 - ~~get~~
 - ~~delete~~

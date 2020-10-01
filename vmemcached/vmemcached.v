@@ -99,3 +99,15 @@ pub fn (m Memcached) delete(key string) bool {
 		else { false }
 	}
 }
+
+pub fn (m Memcached) add(key, val string) bool {
+	msg := 'add $key 0 0 $val.len\r\n$val'
+	m.socket.write(msg) or {
+		return false
+	}
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'STORED' { true }
+		else { false }
+	}
+}
