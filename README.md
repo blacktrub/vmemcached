@@ -5,5 +5,4 @@
 - ~~get~~
 - ~~delete~~
 - incr/decr
-- stats
 - ~~flush_all~~
