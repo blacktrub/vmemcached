@@ -128,3 +128,24 @@ fn test_incr_just_work() {
 	val := m.get('key')
 	assert val.content == '2'
 }
+
+fn test_decr_do_not_work_with_empty_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.decr('key', '1')
+	assert !response
+}
+
+fn test_decr_just_work() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('key', '2')
+	response := m.decr('key', '1')
+	assert response
+	val := m.get('key')
+	assert val.content == '1'
+}

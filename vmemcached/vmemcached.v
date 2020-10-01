@@ -123,3 +123,15 @@ pub fn (m Memcached) incr(key, val string) bool {
 		else { true }
 	}
 }
+
+pub fn (m Memcached) decr(key, val string) bool {
+	msg := 'decr $key $val'
+	m.socket.write(msg) or {
+		return false
+	}
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'NOT_FOUND' { false }
+		else { true }
+	}
+}

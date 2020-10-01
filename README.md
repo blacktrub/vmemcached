@@ -4,5 +4,5 @@
 - ~~replace~~
 - ~~get~~
 - ~~delete~~
-- incr/decr
+- ~~incr/decr~~
 - ~~flush_all~~
