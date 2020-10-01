@@ -6,3 +6,6 @@
 - ~~delete~~
 - ~~incr/decr~~
 - ~~flush_all~~
+- cas
+- append/prepend
+- gets
