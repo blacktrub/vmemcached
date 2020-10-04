@@ -7,7 +7,7 @@
 - ~~incr/decr~~
 - ~~flush_all~~
 - set with experation
-- touch
+- ~~touch~~
 - cas
 - append/prepend
 - gets

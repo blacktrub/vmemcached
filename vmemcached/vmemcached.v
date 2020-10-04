@@ -135,3 +135,17 @@ pub fn (m Memcached) decr(key, val string) bool {
 		else { true }
 	}
 }
+
+pub fn (m Memcached) touch(key, exp string) bool {
+	msg := 'touch $key $exp\r\n'
+	m.socket.write(msg) or {
+		return false
+	}
+	// TODO: fucking read_line
+	m.socket.read_line()
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'TOUCHED' { true }
+		else { false }
+	}
+}

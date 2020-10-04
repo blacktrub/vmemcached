@@ -149,3 +149,22 @@ fn test_decr_just_work() {
 	val := m.get('key')
 	assert val.content == '1'
 }
+
+fn test_touch_do_not_work_with_unexists_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.touch('key', '0')
+	assert !response
+}
+
+fn test_touch_success_case() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('test', '1')
+	response := m.touch('test', '0')
+	assert response
+}
