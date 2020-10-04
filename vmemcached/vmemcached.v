@@ -60,8 +60,8 @@ pub fn (m Memcached) get(key string) Value {
 	return Value{clean_response(value)}
 }
 
-pub fn (m Memcached) set(key, val string) bool {
-	msg := 'set $key 0 0 $val.len\r\n$val\r\n'
+pub fn (m Memcached) set(key, val string, exp int) bool {
+	msg := 'set $key 0 $exp $val.len\r\n$val\r\n'
 	m.socket.write(msg) or {
 		return false
 	}

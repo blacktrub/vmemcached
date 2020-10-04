@@ -35,7 +35,7 @@ fn test_set_value() {
 	defer {
 		clean(m)
 	}
-	response := m.set('key', 'value')
+	response := m.set('key', 'value', 0)
 	assert response
 }
 
@@ -44,7 +44,7 @@ fn test_nonempty_get() {
 	defer {
 		clean(m)
 	}
-	m.set('key', 'test')
+	m.set('key', 'test', 0)
 	response := m.get('key')
 	assert response.content == 'test'
 }
@@ -63,7 +63,7 @@ fn test_replace_work_with_real_key() {
 	defer {
 		clean(m)
 	}
-	m.set('key', '1')
+	m.set('key', '1', 0)
 	response := m.replace('key', '2')
 	assert response
 	real_val := m.get('key')
@@ -84,7 +84,7 @@ fn test_delete_with_real_key() {
 	defer {
 		clean(m)
 	}
-	m.set('key', '1')
+	m.set('key', '1', 0)
 	response := m.delete('key')
 	assert response
 }
@@ -103,7 +103,7 @@ fn test_add_do_not_work_with_nonempty_key() {
 	defer {
 		clean(m)
 	}
-	m.set('key', '1')
+	m.set('key', '1', 0)
 	response := m.add('key', '2')
 	assert !response
 }
@@ -122,7 +122,7 @@ fn test_incr_just_work() {
 	defer {
 		clean(m)
 	}
-	m.set('key', '1')
+	m.set('key', '1', 0)
 	response := m.incr('key', '1')
 	assert response
 	val := m.get('key')
@@ -143,7 +143,7 @@ fn test_decr_just_work() {
 	defer {
 		clean(m)
 	}
-	m.set('key', '2')
+	m.set('key', '2', 0)
 	response := m.decr('key', '1')
 	assert response
 	val := m.get('key')
@@ -164,7 +164,7 @@ fn test_touch_success_case() {
 	defer {
 		clean(m)
 	}
-	m.set('test', '1')
+	m.set('test', '1', 0)
 	response := m.touch('test', 0)
 	assert response
 }

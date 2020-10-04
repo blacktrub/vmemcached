@@ -6,7 +6,7 @@
 - ~~delete~~
 - ~~incr/decr~~
 - ~~flush_all~~
-- set with experation
+- ~~set with expiration~~
 - ~~touch~~
 - cas
 - append/prepend
