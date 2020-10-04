@@ -136,7 +136,7 @@ pub fn (m Memcached) decr(key, val string) bool {
 	}
 }
 
-pub fn (m Memcached) touch(key, exp string) bool {
+pub fn (m Memcached) touch(key string, exp int) bool {
 	msg := 'touch $key $exp\r\n'
 	m.socket.write(msg) or {
 		return false

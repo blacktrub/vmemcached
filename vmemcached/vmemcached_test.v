@@ -155,7 +155,7 @@ fn test_touch_do_not_work_with_unexists_key() {
 	defer {
 		clean(m)
 	}
-	response := m.touch('key', '0')
+	response := m.touch('key', 0)
 	assert !response
 }
 
@@ -165,6 +165,6 @@ fn test_touch_success_case() {
 		clean(m)
 	}
 	m.set('test', '1')
-	response := m.touch('test', '0')
+	response := m.touch('test', 0)
 	assert response
 }
