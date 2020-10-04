@@ -6,6 +6,8 @@
 - ~~delete~~
 - ~~incr/decr~~
 - ~~flush_all~~
+- set with experation
+- touch
 - cas
 - append/prepend
 - gets
