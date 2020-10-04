@@ -54,7 +54,7 @@ fn test_replace_empty_key() {
 	defer {
 		clean(m)
 	}
-	response := m.replace('key', 'test')
+	response := m.replace('key', 'test', 0)
 	assert !response
 }
 
@@ -64,7 +64,7 @@ fn test_replace_work_with_real_key() {
 		clean(m)
 	}
 	m.set('key', '1', 0)
-	response := m.replace('key', '2')
+	response := m.replace('key', '2', 0)
 	assert response
 	real_val := m.get('key')
 	assert real_val.content == '2'
@@ -94,7 +94,7 @@ fn test_add_work_with_empty_key() {
 	defer {
 		clean(m)
 	}
-	response := m.add('key', '1')
+	response := m.add('key', '1', 0)
 	assert response
 }
 
@@ -104,7 +104,7 @@ fn test_add_do_not_work_with_nonempty_key() {
 		clean(m)
 	}
 	m.set('key', '1', 0)
-	response := m.add('key', '2')
+	response := m.add('key', '2', 0)
 	assert !response
 }
 

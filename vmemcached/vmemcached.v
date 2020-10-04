@@ -72,8 +72,8 @@ pub fn (m Memcached) set(key, val string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) replace(key, val string) bool {
-	msg := 'replace $key 0 0 $val.len\r\n$val\r\n'
+pub fn (m Memcached) replace(key, val string, exp int) bool {
+	msg := 'replace $key 0 $exp $val.len\r\n$val\r\n'
 	m.socket.write(msg) or {
 		return false
 	}
@@ -100,8 +100,8 @@ pub fn (m Memcached) delete(key string) bool {
 	}
 }
 
-pub fn (m Memcached) add(key, val string) bool {
-	msg := 'add $key 0 0 $val.len\r\n$val'
+pub fn (m Memcached) add(key, val string, exp int) bool {
+	msg := 'add $key 0 $exp $val.len\r\n$val'
 	m.socket.write(msg) or {
 		return false
 	}
