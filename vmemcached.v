@@ -46,7 +46,7 @@ pub fn (m Memcached) flushall() bool {
 }
 
 pub fn (m Memcached) get(key string) Value {
-	msg := 'get $key\r\n'
+	msg := 'get $key'
 	m.socket.write(msg) or {
 		return Value{}
 	}
@@ -54,15 +54,15 @@ pub fn (m Memcached) get(key string) Value {
 	if response == 'END\r\n' {
 		return Value{}
 	}
-	// TODO: why?
-	m.socket.read_line()
 	value := m.socket.read_line()
 	return Value{clean_response(value)}
 }
 
 pub fn (m Memcached) set(key, val string, exp int) bool {
-	msg := 'set $key 0 $exp $val.len\r\n$val\r\n'
-	m.socket.write(msg) or {
+	m.socket.write('set $key 0 $exp $val.len') or {
+		return false
+	}
+	m.socket.write('$val') or {
 		return false
 	}
 	response := m.socket.read_line()[0..6]
@@ -73,13 +73,12 @@ pub fn (m Memcached) set(key, val string, exp int) bool {
 }
 
 pub fn (m Memcached) replace(key, val string, exp int) bool {
-	msg := 'replace $key 0 $exp $val.len\r\n$val\r\n'
-	m.socket.write(msg) or {
+	m.socket.write('replace $key 0 $exp $val.len') or {
 		return false
 	}
-	// TODO: why?
-	// see https://github.com/vlang/v/blob/master/vlib/net/socket.v#L310
-	m.socket.read_line()
+	m.socket.write('$val') or {
+		return false
+	}
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'STORED' { true }
@@ -88,11 +87,10 @@ pub fn (m Memcached) replace(key, val string, exp int) bool {
 }
 
 pub fn (m Memcached) delete(key string) bool {
-	msg := 'delete $key\r\n'
+	msg := 'delete $key'
 	m.socket.write(msg) or {
 		return false
 	}
-	m.socket.read_line()
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'DELETED' { true }
@@ -101,8 +99,10 @@ pub fn (m Memcached) delete(key string) bool {
 }
 
 pub fn (m Memcached) add(key, val string, exp int) bool {
-	msg := 'add $key 0 $exp $val.len\r\n$val'
-	m.socket.write(msg) or {
+	m.socket.write('add $key 0 $exp $val.len') or {
+		return false
+	}
+	m.socket.write('$val') or {
 		return false
 	}
 	response := clean_response(m.socket.read_line())
@@ -137,12 +137,10 @@ pub fn (m Memcached) decr(key, val string) bool {
 }
 
 pub fn (m Memcached) touch(key string, exp int) bool {
-	msg := 'touch $key $exp\r\n'
+	msg := 'touch $key $exp'
 	m.socket.write(msg) or {
 		return false
 	}
-	// TODO: fucking read_line
-	m.socket.read_line()
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'TOUCHED' { true }
