@@ -1,7 +1,14 @@
+# Vmemcached
+This is a memcached client library for the V programming langugage (https://vlang.io)
+More about client protocol and another memcached stuff you can see [here](https://memcached.org/)
+
 # Installation
 ```bash
 v install blacktrub.vmemcached
 ```
+
+# Documentation
+Each method of this library has test case, so you can use test module as documentation, feel free to open issue if it is not enough
 
 # Quick start example
 ```v
