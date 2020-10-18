@@ -208,3 +208,23 @@ fn test_prepend_work() {
 	response := m.get('test')
 	assert response.content == '21'
 }
+
+fn test_gets_return_uniq() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('test', '1', 0)
+	response := m.gets('test')
+	assert response.content == '1'
+	assert response.casid != ''
+}
+
+fn test_cas_do_not_work_with_unexists_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.cas('test', '1', 0, 1)
+	assert !response
+}

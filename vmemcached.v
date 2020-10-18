@@ -14,6 +14,7 @@ pub struct Memcached {
 pub struct Value {
 pub:
 	content string
+	casid   string
 }
 
 fn clean_response(response string) string {
@@ -55,7 +56,7 @@ pub fn (m Memcached) get(key string) Value {
 		return Value{}
 	}
 	value := m.socket.read_line()
-	return Value{clean_response(value)}
+	return Value{clean_response(value) ''}
 }
 
 pub fn (m Memcached) set(key string, val string, exp int) bool {
@@ -172,6 +173,34 @@ pub fn (m Memcached) prepend(key string, val string) bool {
 		return false
 	}
 	response := clean_response(m.socket.read_line())
+	return match response {
+		'STORED' { true }
+		else { false }
+	}
+}
+
+pub fn (m Memcached) gets(key string) Value {
+	m.socket.write('gets $key') or {
+		return Value{}
+	}
+	response := clean_response(m.socket.read_line())
+	if response == 'END' {
+		return Value{}
+	}
+	response_params := response.split(' ')
+	casid := response_params[response_params.len - 1]
+	value := m.socket.read_line()
+	return Value{clean_response(value), casid}
+}
+
+pub fn (m Memcached) cas(key string, val string, exp int, casid int) bool {
+	m.socket.write('cas $key 0 $exp $val.len $casid') or {
+		return false
+	}
+	m.socket.write('$val') or {
+		return false
+	}
+	response := m.socket.read_line()[0..6]
 	return match response {
 		'STORED' { true }
 		else { false }

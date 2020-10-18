@@ -27,6 +27,6 @@ fn main() {
 - ~~flush_all~~
 - ~~set with expiration~~
 - ~~touch~~
-- cas
 - ~~append/prepend~~
-- gets
+- ~~cas~~
+- ~~gets~~
