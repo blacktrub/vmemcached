@@ -28,5 +28,5 @@ fn main() {
 - ~~set with expiration~~
 - ~~touch~~
 - cas
-- append/prepend
+- ~~append/prepend~~
 - gets

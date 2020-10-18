@@ -147,3 +147,33 @@ pub fn (m Memcached) touch(key string, exp int) bool {
 		else { false }
 	}
 }
+
+pub fn (m Memcached) append(key string, val string) bool {
+	msg := 'append $key 0 0 $val.len'
+	m.socket.write(msg) or {
+		return false
+	}
+	m.socket.write('$val') or {
+		return false
+	}
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'STORED' { true }
+		else { false }
+	}
+}
+
+pub fn (m Memcached) prepend(key string, val string) bool {
+	msg := 'prepend $key 0 0 $val.len'
+	m.socket.write(msg) or {
+		return false
+	}
+	m.socket.write('$val') or {
+		return false
+	}
+	response := clean_response(m.socket.read_line())
+	return match response {
+		'STORED' { true }
+		else { false }
+	}
+}

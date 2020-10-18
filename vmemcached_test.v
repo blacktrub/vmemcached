@@ -168,3 +168,43 @@ fn test_touch_success_case() {
 	response := m.touch('test', 0)
 	assert response
 }
+
+fn test_append_do_not_work_with_unexists_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.append('test', '1')
+	assert !response
+}
+
+fn test_append_work() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('test', '1', 0)
+	m.append('test', '2')
+	response := m.get('test')
+	assert response.content == '12'
+}
+
+fn test_prepend_do_not_work_with_unexists_key() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	response := m.prepend('test', '1')
+	assert !response
+}
+
+fn test_prepend_work() {
+	m := setup()
+	defer {
+		clean(m)
+	}
+	m.set('test', '1', 0)
+	m.prepend('test', '2')
+	response := m.get('test')
+	assert response.content == '21'
+}
