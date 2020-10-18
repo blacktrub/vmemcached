@@ -17,16 +17,13 @@ fn main() {
 }
 ```
 
-# TODO
-- ~~set~~
-- ~~add~~
-- ~~replace~~
-- ~~get~~
-- ~~delete~~
-- ~~incr/decr~~
-- ~~flush_all~~
-- ~~set with expiration~~
-- ~~touch~~
-- ~~append/prepend~~
-- ~~cas~~
-- ~~gets~~
+# How run tests
+For run tests you must run docker container with memcached
+```bash
+docker run -d --name mmhed -p 11211:11211 memcached -vv
+```
+
+And just run tests in project directory
+```v
+v test .
+```
