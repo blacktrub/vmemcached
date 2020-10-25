@@ -26,6 +26,8 @@ jobs:
         id: v
       - name: V version
         run: v -v
+      - name: Run diff linter
+        run: v fmt -diff vmemcached.v vmemcached_test.v
       - name: Run linter
         run: v fmt -c vmemcached.v vmemcached_test.v
       - name: Run tests
