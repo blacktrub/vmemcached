@@ -56,7 +56,7 @@ pub fn (m Memcached) get(key string) Value {
 		return Value{}
 	}
 	value := m.socket.read_line()
-	return Value{clean_response(value), ''}
+	return Value{clean_response(value) ''}
 }
 
 pub fn (m Memcached) set(key string, val string, exp int) bool {
