@@ -56,10 +56,10 @@ pub fn (m Memcached) get(key string) Value {
 		return Value{}
 	}
 	value := m.socket.read_line()
-	return Value{clean_response(value) ''}
+	return Value{clean_response(value), ''}
 }
 
-pub fn (m Memcached) set(key string, val string, exp int) bool {
+pub fn (m Memcached) set(key, val string, exp int) bool {
 	m.socket.write('set $key 0 $exp $val.len') or {
 		return false
 	}
@@ -73,7 +73,7 @@ pub fn (m Memcached) set(key string, val string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) replace(key string, val string, exp int) bool {
+pub fn (m Memcached) replace(key, val string, exp int) bool {
 	m.socket.write('replace $key 0 $exp $val.len') or {
 		return false
 	}
@@ -99,7 +99,7 @@ pub fn (m Memcached) delete(key string) bool {
 	}
 }
 
-pub fn (m Memcached) add(key string, val string, exp int) bool {
+pub fn (m Memcached) add(key, val string, exp int) bool {
 	m.socket.write('add $key 0 $exp $val.len') or {
 		return false
 	}
@@ -113,7 +113,7 @@ pub fn (m Memcached) add(key string, val string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) incr(key string, val string) bool {
+pub fn (m Memcached) incr(key, val string) bool {
 	msg := 'incr $key $val'
 	m.socket.write(msg) or {
 		return false
@@ -125,7 +125,7 @@ pub fn (m Memcached) incr(key string, val string) bool {
 	}
 }
 
-pub fn (m Memcached) decr(key string, val string) bool {
+pub fn (m Memcached) decr(key, val string) bool {
 	msg := 'decr $key $val'
 	m.socket.write(msg) or {
 		return false
@@ -149,7 +149,7 @@ pub fn (m Memcached) touch(key string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) append(key string, val string) bool {
+pub fn (m Memcached) append(key, val string) bool {
 	msg := 'append $key 0 0 $val.len'
 	m.socket.write(msg) or {
 		return false
@@ -164,7 +164,7 @@ pub fn (m Memcached) append(key string, val string) bool {
 	}
 }
 
-pub fn (m Memcached) prepend(key string, val string) bool {
+pub fn (m Memcached) prepend(key, val string) bool {
 	msg := 'prepend $key 0 0 $val.len'
 	m.socket.write(msg) or {
 		return false
@@ -193,7 +193,7 @@ pub fn (m Memcached) gets(key string) Value {
 	return Value{clean_response(value), casid}
 }
 
-pub fn (m Memcached) cas(key string, val string, exp int, casid int) bool {
+pub fn (m Memcached) cas(key, val string, exp int, casid int) bool {
 	m.socket.write('cas $key 0 $exp $val.len $casid') or {
 		return false
 	}
