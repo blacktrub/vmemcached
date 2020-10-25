@@ -193,7 +193,7 @@ pub fn (m Memcached) gets(key string) Value {
 	return Value{clean_response(value), casid}
 }
 
-pub fn (m Memcached) cas(key, val string, exp int, casid int) bool {
+pub fn (m Memcached) cas(key, val string, exp, casid int) bool {
 	m.socket.write('cas $key 0 $exp $val.len $casid') or {
 		return false
 	}
