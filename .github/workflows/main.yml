@@ -24,5 +24,7 @@ jobs:
         with:
           v-version: latest
         id: v
+      - name: Run linter
+        run: v fmt -c .
       - name: Run tests
         run: v test .
