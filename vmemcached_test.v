@@ -1,9 +1,7 @@
 import vmemcached
 
 fn setup() vmemcached.Memcached {
-	m := vmemcached.connect(vmemcached.Connection{}) or {
-		panic(err)
-	}
+	m := vmemcached.connect(vmemcached.Connection{}) or { panic(err) }
 	return m
 }
 

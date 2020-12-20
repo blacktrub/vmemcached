@@ -22,9 +22,7 @@ fn clean_response(response string) string {
 }
 
 pub fn connect(opt Connection) ?Memcached {
-	socket := net.dial(opt.host, opt.port) or {
-		return error(err)
-	}
+	socket := net.dial(opt.host, opt.port) or { return error(err) }
 	return Memcached{
 		socket: socket
 	}
@@ -36,9 +34,7 @@ pub fn (m Memcached) disconnect() {
 
 pub fn (m Memcached) flushall() bool {
 	message := 'flush_all\r\n'
-	m.socket.write(message) or {
-		return false
-	}
+	m.socket.write(message) or { return false }
 	response := m.socket.read_line()[0..2]
 	return match response {
 		'OK' { true }
@@ -48,9 +44,7 @@ pub fn (m Memcached) flushall() bool {
 
 pub fn (m Memcached) get(key string) Value {
 	msg := 'get $key'
-	m.socket.write(msg) or {
-		return Value{}
-	}
+	m.socket.write(msg) or { return Value{} }
 	response := m.socket.read_line()
 	if response == 'END\r\n' {
 		return Value{}
@@ -59,13 +53,9 @@ pub fn (m Memcached) get(key string) Value {
 	return Value{clean_response(value), ''}
 }
 
-pub fn (m Memcached) set(key, val string, exp int) bool {
-	m.socket.write('set $key 0 $exp $val.len') or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+pub fn (m Memcached) set(key string, val string, exp int) bool {
+	m.socket.write('set $key 0 $exp $val.len') or { return false }
+	m.socket.write('$val') or { return false }
 	response := m.socket.read_line()[0..6]
 	return match response {
 		'STORED' { true }
@@ -73,13 +63,9 @@ pub fn (m Memcached) set(key, val string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) replace(key, val string, exp int) bool {
-	m.socket.write('replace $key 0 $exp $val.len') or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+pub fn (m Memcached) replace(key string, val string, exp int) bool {
+	m.socket.write('replace $key 0 $exp $val.len') or { return false }
+	m.socket.write('$val') or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'STORED' { true }
@@ -89,9 +75,7 @@ pub fn (m Memcached) replace(key, val string, exp int) bool {
 
 pub fn (m Memcached) delete(key string) bool {
 	msg := 'delete $key'
-	m.socket.write(msg) or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'DELETED' { true }
@@ -99,13 +83,9 @@ pub fn (m Memcached) delete(key string) bool {
 	}
 }
 
-pub fn (m Memcached) add(key, val string, exp int) bool {
-	m.socket.write('add $key 0 $exp $val.len') or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+pub fn (m Memcached) add(key string, val string, exp int) bool {
+	m.socket.write('add $key 0 $exp $val.len') or { return false }
+	m.socket.write('$val') or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'STORED' { true }
@@ -113,11 +93,9 @@ pub fn (m Memcached) add(key, val string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) incr(key, val string) bool {
+pub fn (m Memcached) incr(key string, val string) bool {
 	msg := 'incr $key $val'
-	m.socket.write(msg) or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'NOT_FOUND' { false }
@@ -125,11 +103,9 @@ pub fn (m Memcached) incr(key, val string) bool {
 	}
 }
 
-pub fn (m Memcached) decr(key, val string) bool {
+pub fn (m Memcached) decr(key string, val string) bool {
 	msg := 'decr $key $val'
-	m.socket.write(msg) or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'NOT_FOUND' { false }
@@ -139,9 +115,7 @@ pub fn (m Memcached) decr(key, val string) bool {
 
 pub fn (m Memcached) touch(key string, exp int) bool {
 	msg := 'touch $key $exp'
-	m.socket.write(msg) or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'TOUCHED' { true }
@@ -149,14 +123,10 @@ pub fn (m Memcached) touch(key string, exp int) bool {
 	}
 }
 
-pub fn (m Memcached) append(key, val string) bool {
+pub fn (m Memcached) append(key string, val string) bool {
 	msg := 'append $key 0 0 $val.len'
-	m.socket.write(msg) or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
+	m.socket.write('$val') or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'STORED' { true }
@@ -164,14 +134,10 @@ pub fn (m Memcached) append(key, val string) bool {
 	}
 }
 
-pub fn (m Memcached) prepend(key, val string) bool {
+pub fn (m Memcached) prepend(key string, val string) bool {
 	msg := 'prepend $key 0 0 $val.len'
-	m.socket.write(msg) or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+	m.socket.write(msg) or { return false }
+	m.socket.write('$val') or { return false }
 	response := clean_response(m.socket.read_line())
 	return match response {
 		'STORED' { true }
@@ -180,9 +146,7 @@ pub fn (m Memcached) prepend(key, val string) bool {
 }
 
 pub fn (m Memcached) gets(key string) Value {
-	m.socket.write('gets $key') or {
-		return Value{}
-	}
+	m.socket.write('gets $key') or { return Value{} }
 	response := clean_response(m.socket.read_line())
 	if response == 'END' {
 		return Value{}
@@ -193,13 +157,9 @@ pub fn (m Memcached) gets(key string) Value {
 	return Value{clean_response(value), casid}
 }
 
-pub fn (m Memcached) cas(key, val string, exp, casid int) bool {
-	m.socket.write('cas $key 0 $exp $val.len $casid') or {
-		return false
-	}
-	m.socket.write('$val') or {
-		return false
-	}
+pub fn (m Memcached) cas(key string, val string, exp int, casid int) bool {
+	m.socket.write('cas $key 0 $exp $val.len $casid') or { return false }
+	m.socket.write('$val') or { return false }
 	response := m.socket.read_line()[0..6]
 	return match response {
 		'STORED' { true }
