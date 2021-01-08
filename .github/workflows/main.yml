@@ -24,6 +24,8 @@ jobs:
         with:
           v-version: latest
         id: v
+      - name: V version
+        run: v -version
       - name: Run linter
         run: v fmt -c vmemcached.v vmemcached_test.v
       - name: Run tests
